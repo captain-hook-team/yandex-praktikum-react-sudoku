@@ -9,6 +9,7 @@ import { loginFormText, loginInputs, getFormData } from '../../components/utils/
 import { useAppDispatch } from '../../store/hooks';
 import { fetchAuthorize, fetchServiceId } from '../../store/slices/userExtraReducers';
 import { IReqData } from '../../utils/Api/AuthApi';
+import { showNotification } from '../../utils/notificationApi';
 
 function LoginPage() {
   const formType = 'login';
@@ -32,7 +33,10 @@ function LoginPage() {
 
     try {
       const data = await dispatch(fetchAuthorize(reqData)).unwrap();
-      if (data) navigate(ROUTES.MAIN);
+      if (data) {
+        navigate(ROUTES.MAIN);
+        showNotification('Выполнен вход в систему');
+      }
     } catch (error) {
       console.error('LoginPage error:', error);
     }

@@ -7,6 +7,12 @@ import './styles/index.scss';
 import ErrorBoundary from './components/utils';
 import { store } from './store';
 
+if ('Notification' in window) {
+  window.addEventListener('load', async () => {
+    await Notification.requestPermission();
+  });
+}
+
 function startServiceWorker() {
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
