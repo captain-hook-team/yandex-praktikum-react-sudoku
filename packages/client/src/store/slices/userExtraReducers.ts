@@ -124,7 +124,7 @@ export const fetchServiceId = createAsyncThunk('user/fetchOtherAuthorize',
   }
 );
 
-export const fetchUserByCode = createAsyncThunk('user/fetchUserByCode',
+export const fetchUserByCode = createAsyncThunk<IReqData, IReqData>('user/fetchUserByCode',
   async (data: IReqData, { rejectWithValue }) => {
     try {
       await OAuthApi.signIn(data);

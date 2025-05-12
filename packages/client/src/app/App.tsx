@@ -27,6 +27,8 @@ function App() {
   const loggedIn = useAppSelector((state) => selectAuth(state));
 
   useEffect(() => {
+    if (typeof window === 'undefined') return;
+
     const params = new URLSearchParams(window.location.search);
     const code = params.get('code');
 

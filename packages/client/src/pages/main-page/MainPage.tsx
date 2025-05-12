@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import ErrorBoundary from '../../components/utils';
 import style from './MainPage.module.scss';
 import ROUTES from '../../constants/constants';
+import mainPageImg from '../../assets/images/mainPage.png';
 import CustomButton from '../../components/custom-button/CustomButton';
 
 type Action = {
@@ -42,7 +43,7 @@ export default function MainPage() {
         <h1 className={style.mainPage__title}>SUDOKU</h1>
         <div className={style.mainPage__resultContainer}>
           <img
-            src="src/assets/images/mainPage.png"
+            src={mainPageImg}
             alt="Result game"
             className={style.mainPage__result}
           />
