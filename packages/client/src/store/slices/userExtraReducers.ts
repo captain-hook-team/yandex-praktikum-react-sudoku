@@ -110,7 +110,7 @@ export const fetchServiceId = createAsyncThunk('user/fetchOtherAuthorize',
   async (_, { rejectWithValue }) => {
     try {
       const { service_id: serviceId } = await OAuthApi.getServiceId();
-      const REDIRECT_URI = 'https://ya-sudoku.netlify.app/';
+      const REDIRECT_URI = 'http://localhost:3000';
       const URL = `https://oauth.yandex.ru/authorize?response_type=code&client_id=${serviceId}&redirect_uri=${REDIRECT_URI}`;
 
       document.location.href = URL;
