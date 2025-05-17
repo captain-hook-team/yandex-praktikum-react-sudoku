@@ -1,7 +1,7 @@
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable import/no-extraneous-dependencies */
 import { Helmet } from 'react-helmet';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import style from './LeaderPage.module.scss';
 import avatar from '../../assets/images/avatar.jpg';
 import leftBlueArrow from '../../assets/icons/left_blue_arrow.svg';
@@ -18,6 +18,10 @@ export const initLeaderPage = async ({ dispatch, state }: PageInitArgs) => {
     await dispatch(fetchUserData());
   }
 };
+
+const HelmetComponent = Helmet as unknown as React.FC<{
+  children: React.ReactNode;
+}>;
 
 export default function LeaderPage() {
   usePage({ initPage: initLeaderPage });
@@ -41,11 +45,11 @@ export default function LeaderPage() {
 
   return (
     <>
-      <Helmet>
+      <HelmetComponent>
         <meta charSet="utf-8" />
         <title>Таблица лидеров</title>
         <meta name="description" content="Страница лидеров" />
-      </Helmet>
+      </HelmetComponent>
       <AppHeader />
       <section className={style.leaderPage}>
         <div className={style.leaderPage__wrap}>

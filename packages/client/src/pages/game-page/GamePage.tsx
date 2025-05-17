@@ -1,4 +1,5 @@
 /* eslint-disable import/no-extraneous-dependencies */
+import React from 'react';
 import { Helmet } from 'react-helmet';
 import { AppHeader, GameField } from '../../components';
 import style from './GamePage.module.scss';
@@ -13,16 +14,22 @@ export const initGamePage = async ({ dispatch, state }: PageInitArgs) => {
   }
 };
 
+const HelmetComponent = Helmet as unknown as React.FC<{
+  children: React.ReactNode;
+}>;
+
+HelmetComponent.displayName = 'Helmet';
+
 export default function GamePage() {
   usePage({ initPage: initGamePage });
 
   return (
     <>
-      <Helmet>
+      <HelmetComponent>
         <meta charSet="utf-8" />
         <title>Игра</title>
         <meta name="description" content="Страница игры" />
-      </Helmet>
+      </HelmetComponent>
       <AppHeader />
       <section className={style.main}>
         <GameField />

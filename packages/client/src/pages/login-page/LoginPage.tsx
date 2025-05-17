@@ -1,6 +1,6 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import { Helmet } from 'react-helmet';
-import { useCallback, FormEvent, memo } from 'react';
+import React, { useCallback, FormEvent, memo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   AppHeader,
@@ -21,6 +21,10 @@ export const initLoginPage = async ({ dispatch, state }: PageInitArgs) => {
     await dispatch(fetchUserData());
   }
 };
+
+const HelmetComponent = Helmet as unknown as React.FC<{
+  children: React.ReactNode;
+}>;
 
 function LoginPage() {
   usePage({ initPage: initLoginPage });
@@ -63,11 +67,11 @@ function LoginPage() {
   const { formTitle, submitText, otherAuthText, linkText } = loginFormText;
   return (
     <>
-      <Helmet>
+      <HelmetComponent>
         <meta charSet="utf-8" />
         <title>Авторизация</title>
         <meta name="description" content="Страница авторизации" />
-      </Helmet>
+      </HelmetComponent>
       <AppHeader />
       <ContentContainer>
         <MainForm

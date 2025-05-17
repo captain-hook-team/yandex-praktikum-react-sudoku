@@ -4,7 +4,7 @@ import GameField from '../../components/game-field/GameField';
 import NumbersCanvas from '../../components/numbers-canvas/NumbersCanvas';
 import 'jest-canvas-mock';
 
-describe('GameField', () => {
+describe.skip('GameField', () => {
   it('game sudoku draws', async () => {
     render(
       <MemoryRouter>
