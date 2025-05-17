@@ -1,6 +1,6 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import { Helmet } from 'react-helmet';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { mockFoldersTopics, mockTopics } from '../../constants/mocks';
 import { IFolderTopic, ITopicList } from '../../models/Forum';
 import ForumPage from '../../pages/forum-page/ForumPage';
@@ -16,6 +16,10 @@ export const initForumPageWrapper = async ({ dispatch, state }: PageInitArgs) =>
   }
 };
 
+const HelmetComponent = Helmet as unknown as React.FC<{
+  children: React.ReactNode;
+}>;
+
 export default function ForumPageWrapper() {
   usePage({ initPage: initForumPageWrapper });
 
@@ -30,11 +34,11 @@ export default function ForumPageWrapper() {
 
   return (
     <>
-      <Helmet>
+      <HelmetComponent>
         <meta charSet="utf-8" />
         <title>Форум</title>
         <meta name="description" content="Страница форума" />
-      </Helmet>
+      </HelmetComponent>
       <AppHeader />
       <ForumPage folders={folders} topics={topics} />
     </>

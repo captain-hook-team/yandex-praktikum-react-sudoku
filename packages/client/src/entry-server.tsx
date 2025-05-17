@@ -54,7 +54,7 @@ const render = async (req: ExpressRequest): Promise<RenderResult> => {
     return {
       html: '<div id="root"></div>', // Пустой root для клиента
       initialState: {},
-      helmet: Helmet.renderStatic(), // Дефолтные метатеги
+      helmet: Helmet.renderStatic() as unknown as HelmetData, // Дефолтные метатеги
     };
   }
   // Из массива foundRoutes извлекается первый элемент, который и будет текущей страницей
@@ -63,7 +63,7 @@ const render = async (req: ExpressRequest): Promise<RenderResult> => {
   store.dispatch(setPageHasBeenInitializedOnServer(true));
 
   // Инициализация Helmet до рендеринга (метатеги)
-  const helmet = Helmet.renderStatic();
+  const helmet = Helmet.renderStatic() as unknown as HelmetData;
 
   try {
     console.log('Инициализация страницы...');

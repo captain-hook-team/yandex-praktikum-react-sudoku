@@ -1,6 +1,6 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import { Helmet } from 'react-helmet';
-import { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import styles from './TopicPage.module.scss';
 import { mockTopic } from '../../constants/mocks';
@@ -19,6 +19,10 @@ export const initTopicPage = async ({ dispatch, state }: PageInitArgs) => {
     await dispatch(fetchUserData());
   }
 };
+
+const HelmetComponent = Helmet as unknown as React.FC<{
+  children: React.ReactNode;
+}>;
 
 export default function TopicPage() {
   usePage({ initPage: initTopicPage });
@@ -49,14 +53,14 @@ export default function TopicPage() {
 
   return (
     <>
-      <Helmet>
+      <HelmetComponent>
         <meta charSet="utf-8" />
         <title>
           {topic.title}
           {' '}
         </title>
         <meta name="description" content="Страница темы форума" />
-      </Helmet>
+      </HelmetComponent>
       <AppHeader />
       <section className={styles.page}>
         <BackButton />

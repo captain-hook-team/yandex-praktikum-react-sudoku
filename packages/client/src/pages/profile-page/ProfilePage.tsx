@@ -1,6 +1,6 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import { Helmet } from 'react-helmet';
-import { ChangeEvent, FormEvent, useCallback, useState, memo } from 'react';
+import React, { ChangeEvent, FormEvent, useCallback, useState, memo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ROUTES from '../../constants/constants';
 import useForm from '../../components/utils/hooks/form/useForm';
@@ -27,6 +27,10 @@ export const initProfilePage = async ({ dispatch, state, ctx }: PageInitArgs) =>
   }
   return Promise.all(queue);
 };
+
+const HelmetComponent = Helmet as unknown as React.FC<{
+  children: React.ReactNode;
+}>;
 
 function ProfilePage() {
   usePage({ initPage: initProfilePage });
@@ -119,11 +123,11 @@ function ProfilePage() {
 
   return (
     <>
-      <Helmet>
+      <HelmetComponent>
         <meta charSet="utf-8" />
         <title>Профиль</title>
         <meta name="description" content="Страница профиля" />
-      </Helmet>
+      </HelmetComponent>
       <AppHeader />
       <section className={style.profilePage}>
         <div className={style.profilePage__card}>

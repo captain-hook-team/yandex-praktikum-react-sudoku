@@ -1,4 +1,5 @@
 /* eslint-disable import/no-extraneous-dependencies */
+import React from 'react';
 import { Helmet } from 'react-helmet';
 import { useNavigate } from 'react-router-dom';
 import style from './MainPage.module.scss';
@@ -26,6 +27,10 @@ export const initMainPage = async ({ dispatch, state, ctx }: PageInitArgs) => {
   }
   return Promise.all(queue);
 };
+
+const HelmetComponent = Helmet as unknown as React.FC<{
+  children: React.ReactNode;
+}>;
 
 function MainPage() {
   usePage({ initPage: initMainPage });
@@ -57,11 +62,11 @@ function MainPage() {
 
   return (
     <>
-      <Helmet>
+      <HelmetComponent>
         <meta charSet="utf-8" />
         <title>Главная</title>
         <meta name="description" content="Главная страница" />
-      </Helmet>
+      </HelmetComponent>
       <AppHeader />
       <section className={style.mainPage}>
         <h1 className={style.mainPage__title}>SUDOKU</h1>

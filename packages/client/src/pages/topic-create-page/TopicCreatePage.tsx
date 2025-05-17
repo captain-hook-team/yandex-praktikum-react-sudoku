@@ -1,6 +1,6 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import { Helmet } from 'react-helmet';
-import { FormEvent, useState } from 'react';
+import React, { FormEvent, useState } from 'react';
 import styles from './TopicCreatePage.module.scss';
 import BackButton from '../../components/back-button/BackButton';
 import CustomButton from '../../components/custom-button/CustomButton';
@@ -16,6 +16,10 @@ export const initTopicCreatePage = async ({ dispatch, state }: PageInitArgs) => 
   }
 };
 
+const HelmetComponent = Helmet as unknown as React.FC<{
+  children: React.ReactNode;
+}>;
+
 export default function TopicCreatePage() {
   usePage({ initPage: initTopicCreatePage });
 
@@ -30,11 +34,11 @@ export default function TopicCreatePage() {
   };
   return (
     <>
-      <Helmet>
+      <HelmetComponent>
         <meta charSet="utf-8" />
         <title>Создать новую тему</title>
         <meta name="description" content="Страница создания новой темы форума" />
-      </Helmet>
+      </HelmetComponent>
       <AppHeader />
       <section className={styles.page}>
         <h1>Создать новую тему</h1>

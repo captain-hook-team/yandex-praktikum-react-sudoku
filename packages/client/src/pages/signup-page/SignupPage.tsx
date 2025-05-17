@@ -1,6 +1,6 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import { Helmet } from 'react-helmet';
-import { useCallback, FormEvent, memo } from 'react';
+import React, { useCallback, FormEvent, memo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AppHeader, ContentContainer, FormField, MainForm } from '../../components';
 import ROUTES from '../../constants/constants';
@@ -18,6 +18,10 @@ export const initSignupPage = async ({ dispatch, state }: PageInitArgs) => {
     await dispatch(fetchUserData());
   }
 };
+
+const HelmetComponent = Helmet as unknown as React.FC<{
+  children: React.ReactNode;
+}>;
 
 function SignupPage() {
   usePage({ initPage: initSignupPage });
@@ -54,11 +58,11 @@ function SignupPage() {
   const { formTitle, submitText, linkText } = signupFormText;
   return (
     <>
-      <Helmet>
+      <HelmetComponent>
         <meta charSet="utf-8" />
         <title>Регистрация</title>
         <meta name="description" content="Страница регистрации" />
-      </Helmet>
+      </HelmetComponent>
       <AppHeader />
       <ContentContainer>
         <MainForm

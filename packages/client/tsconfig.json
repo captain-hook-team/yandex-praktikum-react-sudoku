@@ -40,7 +40,8 @@
   },
   "include": [
     "src",
-    "public/sw.ts"
+    "public/sw.ts",
+    "src/client.d.ts",
   ],
   "references": [
     {

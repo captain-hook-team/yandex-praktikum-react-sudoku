@@ -101,6 +101,14 @@ async function createServer() {
         isJSON: true,
       });
 
+      const helmetTags = [
+        helmet?.title?.toString(),
+        helmet?.meta?.toString(),
+        helmet?.link?.toString(),
+        helmet?.script?.toString(),
+        helmet?.style?.toString(),
+      ].filter(Boolean).join('\n');
+
       // Заменяем комментарий на сгенерированную HTML-строку
       const html = template
         .replace(
