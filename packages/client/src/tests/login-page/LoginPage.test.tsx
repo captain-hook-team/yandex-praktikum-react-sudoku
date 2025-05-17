@@ -26,7 +26,7 @@ describe('LoginPage', () => {
   it('handle submit not called', async () => {
     const handleSubmit = jest.fn();
 
-    fireEvent.click(screen.getByText(/Авторизоваться/i));
+    fireEvent.click(screen.getAllByText(/Авторизоваться/i)[0]);
     await waitFor(() => {
       expect(handleSubmit).not.toBeCalled();
     });

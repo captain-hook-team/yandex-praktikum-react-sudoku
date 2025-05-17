@@ -1,3 +1,6 @@
+/* eslint-disable no-undef */
+import '../client.d';
+
 enum ROUTES {
   MAIN = '/',
   SIGN_UP = '/signup',
@@ -17,3 +20,9 @@ enum ROUTES {
 export default ROUTES;
 
 export const GAME_BUTTONS: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+
+export const isServer = typeof window === 'undefined';
+// Добавлена новая константа для URL сервера
+export const SERVER_HOST = isServer
+  ? __INTERNAL_SERVER_URL__
+  : __EXTERNAL_SERVER_URL__;

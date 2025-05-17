@@ -1,7 +1,6 @@
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import GameCell from '../game-cell/GameCell';
 import mockField from './mockField';
-
 import style from './GameField.module.scss';
 import addOrRemove from '../../utils/addOrRemove';
 import { GameFieldButton, InputNumberButton } from '../buttons';
@@ -32,6 +31,7 @@ interface IDocument {
 }
 
 function GameField() {
+  const [isFullscreen, setIsFullscreen] = useState<boolean>(!!document.fullscreenElement);
   const [field, setField] = useState<CellInfo[][]>(JSON.parse(JSON.stringify(mockField)));
   const [isEnabledNotes, setIsEnabledNotes] = useState<boolean>(false);
   const [isPopupOpen, setPopupOpen] = useState<boolean>(false);
@@ -40,6 +40,18 @@ function GameField() {
   const [selectedCell, setSelectedCell] = useState<CellInfo>();
   const [countHints, setCountHints] = useState<number>(0);
   const [countErrors, setCountErrors] = useState<number>(0);
+
+  useEffect(() => {
+    const handleFullscreenChange = () => {
+      setIsFullscreen(!!document.fullscreenElement);
+    };
+
+    document.addEventListener('fullscreenchange', handleFullscreenChange);
+
+    return () => {
+      document.removeEventListener('fullscreenchange', handleFullscreenChange);
+    };
+  }, []);
 
   const handleRefreshField = () => {
     setField(JSON.parse(JSON.stringify(mockField)));
@@ -145,10 +157,8 @@ function GameField() {
     setMoveHistory((prevState: CellInfo[]) => prevState.slice(0, -1));
   }, [moveHistory]);
 
-  const containerRef = useRef<HTMLDivElement | null>(null);
-
   const enterFullscreen = () => {
-    const fullscreenElement = containerRef.current as IFullscreenElement;
+    const fullscreenElement = document.body as IFullscreenElement;
 
     if (fullscreenElement.requestFullscreen) {
       fullscreenElement.requestFullscreen();
@@ -194,7 +204,6 @@ function GameField() {
       <div
         className={style.section}
         onKeyDown={handleKeyDown}
-        ref={containerRef}
       >
         <Popup
           isOpen={isPopupOpen}
@@ -289,7 +298,7 @@ function GameField() {
           <GameFieldButton
             srcImage="./fullscreen.svg"
             onClick={toggleFullscreen}
-            titleBtn="На весь экран"
+            titleBtn={isFullscreen ? 'Выйти из полноэкранного режима' : 'На весь экран'}
           />
         </div>
 

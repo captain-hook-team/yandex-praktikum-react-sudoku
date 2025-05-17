@@ -1,4 +1,4 @@
-import { BASE_URL } from '../../config/ApiConfig';
+import { API_URL } from '../../config/ApiConfig';
 import { BaseApi } from './BaseApi';
 
 const HEADERS = {
@@ -13,7 +13,7 @@ class UserApi extends BaseApi {
   constructor() {
     super({
       headers: HEADERS,
-      baseUrl: BASE_URL,
+      baseUrl: API_URL,
       endpoint: '/user',
     });
   }

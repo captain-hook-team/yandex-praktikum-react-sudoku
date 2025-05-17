@@ -9,6 +9,7 @@ import { selectAuth } from '../../store/slices/userSlice';
 
 export default function AppHeader() {
   const { isModalOpen, toggleModal, closeModal } = useModal(style.header__overlay);
+
   const loggedIn = useAppSelector((state) => selectAuth(state));
 
   function getRoute() {

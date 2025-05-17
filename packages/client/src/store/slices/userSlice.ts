@@ -10,13 +10,17 @@ const initialState: UserState = {
   error: null,
 };
 
+// Вспомогательная функция для проверки, является ли объект валидным
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const isValidUserObject = (obj: any): obj is IProfile => obj !== null && typeof obj === 'object' && !Array.isArray(obj);
+
 const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
     setUser(state, action: PayloadAction<IProfile>) {
       state.user = action.payload;
-      state.isAuth = true;
+      state.isAuth = isValidUserObject(action.payload);
       state.loading = false;
       state.error = null;
     },
@@ -34,6 +38,8 @@ const userSlice = createSlice({
     updateUser(state, action: PayloadAction<Partial<IProfile>>) {
       if (state.user) {
         state.user = { ...state.user, ...action.payload };
+        // После обновления также проверяем валидность user
+        state.isAuth = isValidUserObject(state.user);
       }
     },
   },
@@ -43,7 +49,8 @@ const userSlice = createSlice({
         state.loading = true;
       })
       .addCase(fetchUserData.fulfilled, (state) => {
-        state.isAuth = true;
+        // Добавляем проверку для extraReducers
+        state.isAuth = isValidUserObject(state.user);
         state.loading = false;
       })
       .addCase(fetchUserData.rejected, (state, action) => {
@@ -54,7 +61,8 @@ const userSlice = createSlice({
         state.loading = true;
       })
       .addCase(fetchAuthorize.fulfilled, (state) => {
-        state.isAuth = true;
+        // Добавляем проверку для extraReducers
+        state.isAuth = isValidUserObject(state.user);
         state.loading = false;
       })
       .addCase(fetchAuthorize.rejected, (state, action) => {

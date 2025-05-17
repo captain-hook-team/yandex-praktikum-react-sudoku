@@ -7,14 +7,25 @@ interface IProps {
   formTitle: string,
   children: ReactElement[],
   submitText: string,
+  otherAuthText?: string,
   linkText: string,
   isFormValid: boolean,
   onSubmit: (e: FormEvent) => void,
   onNavigate: () => void,
+  onOtherAuthorize?: () => void,
 }
 
 function MainForm({
-  formTitle, children, submitText, linkText, type, isFormValid, onSubmit, onNavigate,
+  formTitle,
+  children,
+  submitText,
+  otherAuthText,
+  onOtherAuthorize,
+  linkText,
+  type,
+  isFormValid,
+  onSubmit,
+  onNavigate,
 }: IProps) {
   const btnContainerClass = [style.mainForm__btnContainer];
   btnContainerClass.push(style[`mainForm__btnContainer_${type}`]);
@@ -34,7 +45,14 @@ function MainForm({
             isDisabled={!isFormValid}
             onClick={onSubmit}
           />
-
+          {otherAuthText && onOtherAuthorize && (
+            <CustomButton
+              type="button"
+              color="primary"
+              text={otherAuthText}
+              onClick={onOtherAuthorize}
+            />
+          )}
           <CustomButton
             type="button"
             color="transparent"

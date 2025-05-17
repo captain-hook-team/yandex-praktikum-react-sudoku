@@ -28,6 +28,7 @@ module.exports = {
     RequestInit: true,
   },
   rules: {
+    'no-nested-ternary': 'off',
     '@typescript-eslint/ban-ts-comment': 1,
     '@typescript-eslint/no-unused-vars': ['off'],
     'class-methods-use-this': 'off',

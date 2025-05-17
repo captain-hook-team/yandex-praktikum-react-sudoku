@@ -6,3 +6,4 @@ lerna-debug.log
 dist
 tmp
 .yarn/install-state.gz
+*.d.ts

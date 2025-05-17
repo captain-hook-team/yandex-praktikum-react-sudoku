@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "moduleResolution": "node16",
+    "composite": true,
+    "target": "ESNext",
+    "module": "Node16",
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "lib": ["ESNext", "DOM"],
+  },
+  "include": ["server/index.ts"]
+}

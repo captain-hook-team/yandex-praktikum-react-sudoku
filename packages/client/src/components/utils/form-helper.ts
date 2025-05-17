@@ -16,6 +16,7 @@ export interface IProps {
 export interface IFormText {
   formTitle: string,
   submitText: string,
+  otherAuthText: string,
   linkText: string,
 }
 
@@ -120,6 +121,7 @@ export interface IGetErrorText {
 
 export const loginFormText: IFormText = {
   formTitle: 'Вход',
+  otherAuthText: 'Авторизоваться через Яндекс',
   submitText: 'Авторизоваться',
   linkText: 'Нет аккаунта?',
 };
