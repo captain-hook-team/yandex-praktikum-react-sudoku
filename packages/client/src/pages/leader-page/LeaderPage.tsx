@@ -18,22 +18,22 @@ function LeaderPage() {
 
   useEffect(() => {
     getLeaderboard({
-      ratingFieldName: "time",
+      ratingFieldName: 'time',
       cursor: 0,
-      limit: 100
-    }).then(res => setPagesCount(Math.ceil(res.length / ROWS_PER_PAGE)));
+      limit: 100,
+    }).then((res) => setPagesCount(Math.ceil(res.length / ROWS_PER_PAGE)));
   }, []);
 
   useEffect(() => {
     getLeaderboard({
-      ratingFieldName: "time",
+      ratingFieldName: 'time',
       cursor: currentPage - 1,
-      limit: ROWS_PER_PAGE
+      limit: ROWS_PER_PAGE,
     })
-    .then(res => {
-      const leaderboard = res.map(item => item.data);
-      setCurrentLeaders(leaderboard);
-    });
+      .then((res) => {
+        const leaderboard = res.map((item) => item.data);
+        setCurrentLeaders(leaderboard);
+      });
   }, [currentPage]);
 
   // TODO: реализовать логику нажатия на кнопку назад
@@ -53,10 +53,10 @@ function LeaderPage() {
         <table className={style.leaderPage__table}>
           <thead>
             <tr className={style.leaderPage__raw}>
-              {TABLE_HEADER_NAME.map((headName, ind) => (
+              {TABLE_HEADER_NAME.map((headName) => (
                 <th
-                    className={`${style.leaderPage__headText} ${style.leaderPage__text} ${headName === 'Имя' ? style.leaderPage__name : ''}`}
-                    key={ind}
+                  className={`${style.leaderPage__headText} ${style.leaderPage__text} ${headName === 'Имя' ? style.leaderPage__name : ''}`}
+                  key={headName}
                 >
                   {headName}
                 </th>
@@ -66,7 +66,7 @@ function LeaderPage() {
 
           <tbody className={style.leaderPage__tableContent}>
             {currentLeaders.map((leader, index) => (
-              <tr className={style.leaderPage__raw} key={index}>
+              <tr className={style.leaderPage__raw} key={leader.name}>
                 <td><p className={`${style.leaderPage__rawText} ${style.leaderPage__text}`}>{index + 1 + ROWS_PER_PAGE * (pagesCount - 1)}</p></td>
                 <td>
                   <div className={style.leaderPage__avatarWrap}>
@@ -93,9 +93,9 @@ function LeaderPage() {
         </table>
 
         <Pagination
-            currentPage={currentPage}
-            totalPages={pagesCount}
-            onPageChange={setCurrentPage}
+          currentPage={currentPage}
+          totalPages={pagesCount}
+          onPageChange={setCurrentPage}
         />
       </div>
     </section>
