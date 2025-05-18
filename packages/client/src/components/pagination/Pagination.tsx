@@ -1,18 +1,22 @@
 import { ReactNode } from 'react';
-import style from './pagination.module.scss';
+
 import { TPaginationProps } from './types';
 
-function Pagination({
-  currentPage, // Текущая страница
-  totalPages, // Общее количество страниц
-  onPageChange, // Функция для изменения страницы
-}: TPaginationProps) {
+import style from './Pagination.module.scss';
+
+function Pagination(props: TPaginationProps) {
+  const { currentPage, totalPages, onPageChange } = props;
+
+  if (totalPages === 1) {
+    return null;
+  }
+
   const renderPagination = () => {
     const paginationItems: ReactNode[] = [];
+
     // Добавляем стрелку "назад"
     paginationItems.push(
       <button
-        type="button"
         key="prev"
         className={`${style.pageButton} ${
           currentPage === 1 ? style.disabled : ''
@@ -23,6 +27,7 @@ function Pagination({
         &lt;
       </button>
     );
+
     // Логика отображения страниц
     if (totalPages <= 5) {
       for (let i = 1; i <= totalPages; i += 1) {
@@ -53,10 +58,12 @@ function Pagination({
           1
         </button>
       );
+
       // Добавляем многоточие, если текущая страница больше 3
       if (currentPage > 3) {
         paginationItems.push(<span key="dots1">...</span>);
       }
+
       // Определяем диапазон страниц для отображения
       const startPage = Math.max(2, currentPage - 1);
       const endPage = Math.min(totalPages - 1, currentPage + 1);
@@ -74,10 +81,12 @@ function Pagination({
           </button>
         );
       }
+
       // Добавляем многоточие, если текущая страница меньше, чем предпоследняя
       if (currentPage < totalPages - 2) {
         paginationItems.push(<span key="dots2">...</span>);
       }
+
       // Отображаем последнюю страницу
       if (totalPages > 1) {
         paginationItems.push(
@@ -94,10 +103,10 @@ function Pagination({
         );
       }
     }
+
     // Добавляем стрелку "вперед"
     paginationItems.push(
       <button
-        type="button"
         key="next"
         className={`${style.pageButton} ${
           currentPage === totalPages ? style.disabled : ''
@@ -109,8 +118,11 @@ function Pagination({
         &gt;
       </button>
     );
+
     return paginationItems;
   };
-  return <div className={style.pagination}>{renderPagination()}</div>;
+
+  return <nav className={style.pagination}>{renderPagination()}</nav>;
 }
+
 export default Pagination;
