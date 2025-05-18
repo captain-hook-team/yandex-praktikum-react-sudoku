@@ -1,9 +1,9 @@
 import apiConfig from '../config/ApiConfig';
 import { fetchWithCookies } from './BaseApi';
-import { IAddLeaderboardResultRequest, ILeaderboardRequest, ILeaderboardResponse } from '@/src/models/LeaderBoard';
+import { IAddLeaderboardResultRequest, ILeaderboardRequest, ILeaderboardResponse } from '../models/LeaderBoard';
 
 export const addLeaderboardResult = async (data: IAddLeaderboardResultRequest) => {
-  return await fetchWithCookies(`${apiConfig.baseUrl}/leaderboard`, {
+  return fetchWithCookies(`${apiConfig.baseUrl}/leaderboard`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data),
@@ -11,7 +11,7 @@ export const addLeaderboardResult = async (data: IAddLeaderboardResultRequest) =
 };
 
 export const getLeaderboard = async (data: ILeaderboardRequest): Promise<ILeaderboardResponse[]> => {
-  return await fetchWithCookies(`${apiConfig.baseUrl}/leaderboard/CaptainHook`, {
+  return fetchWithCookies(`${apiConfig.baseUrl}/leaderboard/CaptainHook`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data),
