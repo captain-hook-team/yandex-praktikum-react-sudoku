@@ -1,15 +1,19 @@
 import { render, screen } from '@testing-library/react';
+import { Provider } from 'react-redux';
 import { MemoryRouter } from 'react-router-dom';
 import GameField from '../../components/game-field/GameField';
 import NumbersCanvas from '../../components/numbers-canvas/NumbersCanvas';
 import 'jest-canvas-mock';
+import { store } from '../../store';
 
 describe.skip('GameField', () => {
   it('game sudoku draws', async () => {
     render(
-      <MemoryRouter>
-        <GameField />
-      </MemoryRouter>
+      <Provider store={store}>
+        <MemoryRouter>
+          <GameField />
+        </MemoryRouter>
+      </Provider>
     );
 
     const cells = screen.getAllByRole('button');
