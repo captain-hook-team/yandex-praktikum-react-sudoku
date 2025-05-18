@@ -44,13 +44,11 @@ function GameField() {
   const [isGameRunning, setIsGameRunning] = useState(true);
 
   useEffect(() => {
-    let interval: NodeJS.Timeout | null = null;
+    let interval = null;
 
     if (isGameRunning) {
       interval = setInterval(() => {
-        setGameTime(prev => {
-          return prev + 1;
-        });
+        setGameTime((prev) => prev + 1);
       }, 1000);
     }
 
@@ -257,7 +255,7 @@ function GameField() {
           </p>
         </Popup>
         <div className={style.gameHeader}>
-          <span style={{ width: '30px'}}>{`${gameTime}`}</span>
+          <span style={{ width: '30px' }}>{`${gameTime}`}</span>
           <span style={{ fontWeight: '900', fontSize: '30px', display: 'flex', gap: '5px' }}>
             {Array(countErrors).fill('X').map((item) => (<span style={{ color: 'red' }}>{item}</span>))}
             {Array(3 - countErrors).fill('X').map((item) => (<span>{item}</span>))}

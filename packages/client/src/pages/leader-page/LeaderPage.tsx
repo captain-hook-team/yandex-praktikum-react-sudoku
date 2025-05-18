@@ -5,6 +5,7 @@ import { getLeaderboard } from '../../services/LeaderBoardServices';
 import { ILeaderScore } from '../../models/LeaderBoard';
 import { selectUser } from '../../store/slices/userSlice';
 import { fetchUserData } from '../../store/slices/userExtraReducers';
+import { PageInitArgs } from '../../routes-object';
 import usePage from '../../hooks/usePage';
 
 import style from './LeaderPage.module.scss';
@@ -74,10 +75,10 @@ function LeaderPage() {
           <table className={style.leaderPage__table}>
             <thead>
               <tr className={style.leaderPage__raw}>
-                {TABLE_HEADER_NAME.map((headName, ind) => (
+                {TABLE_HEADER_NAME.map((headName) => (
                   <th
                     className={`${style.leaderPage__headText} ${style.leaderPage__text} ${headName === 'Имя' ? style.leaderPage__name : ''}`}
-                    key={ind}
+                    key={headName}
                   >
                     {headName}
                   </th>
@@ -87,7 +88,7 @@ function LeaderPage() {
 
             <tbody className={style.leaderPage__tableContent}>
               {currentLeaders.map((leader, index) => (
-                <tr className={style.leaderPage__raw} key={index}>
+                <tr className={style.leaderPage__raw} key={leader.name}>
                   <td><p className={`${style.leaderPage__rawText} ${style.leaderPage__text}`}>{index + 1 + ROWS_PER_PAGE * (pagesCount - 1)}</p></td>
                   <td>
                     <div className={style.leaderPage__avatarWrap}>
