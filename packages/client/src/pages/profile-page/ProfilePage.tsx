@@ -1,4 +1,3 @@
-/* eslint-disable import/no-extraneous-dependencies */
 import { Helmet } from 'react-helmet';
 import React, { ChangeEvent, FormEvent, useCallback, useState, memo } from 'react';
 import { useNavigate } from 'react-router-dom';

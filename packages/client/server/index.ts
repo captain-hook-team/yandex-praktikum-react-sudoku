@@ -1,4 +1,3 @@
-/* eslint-disable import/no-extraneous-dependencies */
 import dotenv from 'dotenv';
 import express, { Request as ExpressRequest } from 'express';
 import path from 'path';

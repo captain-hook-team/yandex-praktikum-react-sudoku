@@ -1,5 +1,4 @@
 /* eslint-disable react/no-array-index-key */
-/* eslint-disable import/no-extraneous-dependencies */
 import { Helmet } from 'react-helmet';
 import React, { useState } from 'react';
 import style from './LeaderPage.module.scss';

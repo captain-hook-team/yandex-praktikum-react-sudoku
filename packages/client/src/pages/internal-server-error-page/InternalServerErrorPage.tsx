@@ -1,4 +1,3 @@
-/* eslint-disable import/no-extraneous-dependencies */
 import React from 'react';
 import { Helmet } from 'react-helmet';
 import usePage from '../../hooks/usePage';

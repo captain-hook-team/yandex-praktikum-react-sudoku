@@ -1,4 +1,3 @@
-/* eslint-disable import/no-extraneous-dependencies */
 import { Helmet } from 'react-helmet';
 import React, { useEffect, useState } from 'react';
 import { mockFoldersTopics, mockTopics } from '../../constants/mocks';

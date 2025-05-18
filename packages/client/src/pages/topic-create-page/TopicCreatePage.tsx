@@ -1,4 +1,3 @@
-/* eslint-disable import/no-extraneous-dependencies */
 import { Helmet } from 'react-helmet';
 import React, { FormEvent, useState } from 'react';
 import styles from './TopicCreatePage.module.scss';
