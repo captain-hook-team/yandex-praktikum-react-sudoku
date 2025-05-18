@@ -1,29 +1,45 @@
-/* eslint-disable no-console */
-/* eslint-disable react/no-array-index-key */
-import { useState } from 'react';
-import style from './LeaderPage.module.scss';
-import avatar from '../../assets/images/avatar.jpg';
-import leftBlueArrow from '../../assets/icons/left_blue_arrow.svg';
-import leaders from './mock';
+import { useEffect, useState } from 'react';
+
 import { Pagination } from '../../components';
+import { getLeaderboard } from '../../services/LeaderBoardServices';
+import { ILeaderScore } from '../../models/LeaderBoard';
 
-export default function LeaderPage() {
-  const [currentPage, setCurrentPage] = useState(1);
+import style from './LeaderPage.module.scss';
+import leftBlueArrow from '../../assets/icons/left_blue_arrow.svg';
+import defaultAvatar from '../../assets/images/default-avatar.png';
 
-  const rowsPerPage = 8; // Количество строк на странице
-  // Вычисляем общее количество страниц
-  const totalPages = Math.ceil(leaders.length / rowsPerPage);
+const ROWS_PER_PAGE = 8;
+const TABLE_HEADER_NAME = ['Место', 'Аватар', 'Имя', 'Время'];
 
-  // Определяем начальный и конечный индексы для текущей страницы
-  const startIndex = (currentPage - 1) * rowsPerPage;
-  const currentLeaders = leaders.slice(startIndex, startIndex + rowsPerPage);
+function LeaderPage() {
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [pagesCount, setPagesCount] = useState<number>(1);
+  const [currentLeaders, setCurrentLeaders] = useState<ILeaderScore[]>([]);
+
+  useEffect(() => {
+    getLeaderboard({
+      ratingFieldName: "time",
+      cursor: 0,
+      limit: 100
+    }).then(res => setPagesCount(Math.ceil(res.length / ROWS_PER_PAGE)));
+  }, []);
+
+  useEffect(() => {
+    getLeaderboard({
+      ratingFieldName: "time",
+      cursor: currentPage - 1,
+      limit: ROWS_PER_PAGE
+    })
+    .then(res => {
+      const leaderboard = res.map(item => item.data);
+      setCurrentLeaders(leaderboard);
+    });
+  }, [currentPage]);
 
   // TODO: реализовать логику нажатия на кнопку назад
   const handleBackBtnClick = () => {
     console.log('The back button is clicked');
   };
-
-  const headNames = ['Место', 'Аватар', 'Имя', 'Время'];
 
   return (
     <section className={style.leaderPage}>
@@ -34,32 +50,56 @@ export default function LeaderPage() {
         </button>
         <h1 className={style.leaderPage__title}>Таблица лидеров</h1>
 
-        <div className={style.leaderPage__table}>
-          <ul className={style.leaderPage__raw}>
-            {headNames.map((headName, ind) => (
-              <li className={`${style.leaderPage__headText} ${style.leaderPage__text} ${headName === 'Имя' ? style.leaderPage__name : ''}`} key={ind}>{headName}</li>
-            ))}
-          </ul>
-          <ul className={style.leaderPage__tableContent}>
+        <table className={style.leaderPage__table}>
+          <thead>
+            <tr className={style.leaderPage__raw}>
+              {TABLE_HEADER_NAME.map((headName, ind) => (
+                <th
+                    className={`${style.leaderPage__headText} ${style.leaderPage__text} ${headName === 'Имя' ? style.leaderPage__name : ''}`}
+                    key={ind}
+                >
+                  {headName}
+                </th>
+              ))}
+            </tr>
+          </thead>
+
+          <tbody className={style.leaderPage__tableContent}>
             {currentLeaders.map((leader, index) => (
-              <li className={style.leaderPage__raw} key={index}>
-                <p className={`${style.leaderPage__rawText} ${style.leaderPage__text}`}>{leader.place}</p>
-                <div className={style.leaderPage__avatarWrap}>
-                  <img className={style.leaderPage__avatar} src={avatar} alt="Аватар" />
-                </div>
-                <p className={`${style.leaderPage__rawText} ${style.leaderPage__text} ${style.leaderPage__name}`}>{leader.name}</p>
-                <p className={`${style.leaderPage__rawText} ${style.leaderPage__text} ${style.leaderPage__lastChild}`}>{leader.time}</p>
-              </li>
+              <tr className={style.leaderPage__raw} key={index}>
+                <td><p className={`${style.leaderPage__rawText} ${style.leaderPage__text}`}>{index + 1 + ROWS_PER_PAGE * (pagesCount - 1)}</p></td>
+                <td>
+                  <div className={style.leaderPage__avatarWrap}>
+                    {
+                      leader?.avatar
+                        ? <img src={`https://ya-praktikum.tech/api/v2/resources${leader.avatar}`} alt="Аватар" className={style.leaderPage__avatar} />
+                        : <img src={defaultAvatar} alt="Avatar" className={style.leaderPage__avatar} />
+                    }
+                  </div>
+                </td>
+                <td>
+                  <p className={`${style.leaderPage__rawText} ${style.leaderPage__text} ${style.leaderPage__name}`}>
+                    {leader.name}
+                  </p>
+                </td>
+                <td>
+                  <p className={`${style.leaderPage__rawText} ${style.leaderPage__text} ${style.leaderPage__lastChild}`}>
+                    {leader.time}
+                  </p>
+                </td>
+              </tr>
             ))}
-          </ul>
-        </div>
+          </tbody>
+        </table>
 
         <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onPageChange={setCurrentPage}
+            currentPage={currentPage}
+            totalPages={pagesCount}
+            onPageChange={setCurrentPage}
         />
       </div>
     </section>
   );
 }
+
+export default LeaderPage;
