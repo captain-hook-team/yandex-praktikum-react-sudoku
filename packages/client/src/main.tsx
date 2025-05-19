@@ -24,6 +24,12 @@ if (!isServer) {
   }
 }
 
+if ('Notification' in window) {
+  window.addEventListener('load', async () => {
+    await Notification.requestPermission();
+  });
+}
+
 function startServiceWorker() {
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
