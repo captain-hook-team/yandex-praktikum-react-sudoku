@@ -42,6 +42,22 @@ export default function TopicPage() {
     console.log(`Submit comment: ${value}`);
   }, []);
 
+  const handleReaction = async (commentId: number, code: string) => {
+    setTopic((prev) => {
+      if (!prev) {
+        return prev;
+      }
+
+      return {
+        ...prev,
+        comments: prev?.comments?.map((comment) =>
+          (comment.id === commentId ? { ...comment, reaction: code } : comment)
+        ),
+      };
+    });
+    // Вызов reactionApi
+  };
+
   if (!topic) {
     return (
       <div className={styles.overlay}>
@@ -81,6 +97,7 @@ export default function TopicPage() {
             comments={topic.comments}
             commentsListClass={styles.comments}
             commentClass={styles.comments__comment}
+            handleReaction={handleReaction}
           />
           <CommentForm
             onSubmit={handleSubmit}

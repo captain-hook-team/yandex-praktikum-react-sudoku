@@ -21,6 +21,11 @@ export default ROUTES;
 
 export const GAME_BUTTONS: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
+export enum EMOJI {
+  LIKE = 'like',
+  DISLIKE = 'dislike'
+}
+
 export const isServer = typeof window === 'undefined';
 // Добавлена новая константа для URL сервера
 export const SERVER_HOST = isServer

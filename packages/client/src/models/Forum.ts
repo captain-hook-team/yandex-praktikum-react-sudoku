@@ -2,6 +2,7 @@ export interface IComment {
   id: number;
   author: { name: string; avatarUrl: string };
   content: string;
+  reaction?: string;
 }
 export interface ITopic {
   id: number;
