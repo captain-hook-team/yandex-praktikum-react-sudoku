@@ -1,4 +1,4 @@
-import { BASE_URL } from '../../config/ApiConfig';
+import { API_URL } from '../../config/ApiConfig';
 import { BaseApi } from './BaseApi';
 import { IReqData } from './AuthApi';
 
@@ -10,7 +10,7 @@ class OAuthApi extends BaseApi {
   constructor() {
     super({
       headers: HEADERS,
-      baseUrl: BASE_URL,
+      baseUrl: API_URL,
       endpoint: '/oauth',
     });
   }

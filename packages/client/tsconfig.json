@@ -21,7 +21,8 @@
     "types": [
       "node",
       "jest",
-      "@testing-library/jest-dom"
+      "@testing-library/jest-dom",
+      "vite/client"
     ],
     "noUnusedLocals": true,
     "noUnusedParameters": true,
@@ -39,7 +40,8 @@
   },
   "include": [
     "src",
-    "public/sw.ts"
+    "public/sw.ts",
+    "src/client.d.ts",
   ],
   "references": [
     {

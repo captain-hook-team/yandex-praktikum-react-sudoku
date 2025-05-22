@@ -1,9 +1,15 @@
+import React from 'react';
+import { Helmet } from 'react-helmet';
 import { useNavigate } from 'react-router-dom';
-import ErrorBoundary from '../../components/utils';
 import style from './MainPage.module.scss';
 import ROUTES from '../../constants/constants';
 import mainPageImg from '../../assets/images/mainPage.png';
 import CustomButton from '../../components/custom-button/CustomButton';
+import { AppHeader } from '../../components';
+import { fetchUserByCode, fetchUserData } from '../../store/slices/userExtraReducers';
+import { selectUser } from '../../store/slices/userSlice';
+import { PageInitArgs } from '../../routes-object';
+import usePage from '../../hooks/usePage';
 
 type Action = {
   text: string;
@@ -11,7 +17,23 @@ type Action = {
   style?: string;
 };
 
-export default function MainPage() {
+export const initMainPage = async ({ dispatch, state, ctx }: PageInitArgs) => {
+  const queue: Array<Promise<unknown>> = [dispatch(fetchUserByCode({
+    clientToken: ctx.clientToken,
+  }))];
+  if (!selectUser(state)) {
+    queue.push(dispatch(fetchUserData()));
+  }
+  return Promise.all(queue);
+};
+
+const HelmetComponent = Helmet as unknown as React.FC<{
+  children: React.ReactNode;
+}>;
+
+function MainPage() {
+  usePage({ initPage: initMainPage });
+
   const navigate = useNavigate();
 
   const actions: Action[] = [
@@ -38,8 +60,14 @@ export default function MainPage() {
   ];
 
   return (
-    <section className={style.mainPage}>
-      <ErrorBoundary>
+    <>
+      <HelmetComponent>
+        <meta charSet="utf-8" />
+        <title>Главная</title>
+        <meta name="description" content="Главная страница" />
+      </HelmetComponent>
+      <AppHeader />
+      <section className={style.mainPage}>
         <h1 className={style.mainPage__title}>SUDOKU</h1>
         <div className={style.mainPage__resultContainer}>
           <img
@@ -60,7 +88,9 @@ export default function MainPage() {
             />
           ))}
         </div>
-      </ErrorBoundary>
-    </section>
+      </section>
+    </>
   );
 }
+
+export default MainPage;

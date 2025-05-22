@@ -1,17 +1,34 @@
-import { useCallback, FormEvent, memo } from 'react';
+import { Helmet } from 'react-helmet';
+import React, { useCallback, FormEvent, memo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
+  AppHeader,
   ContentContainer, FormField, MainForm,
 } from '../../components/index';
 import ROUTES from '../../constants/constants';
 import useForm from '../../components/utils/hooks/form/useForm';
 import { loginFormText, loginInputs, getFormData } from '../../components/utils/form-helper';
 import { useAppDispatch } from '../../store/hooks';
-import { fetchAuthorize, fetchServiceId } from '../../store/slices/userExtraReducers';
+import { fetchAuthorize, fetchServiceId, fetchUserData } from '../../store/slices/userExtraReducers';
 import { IReqData } from '../../utils/Api/AuthApi';
 import { showNotification } from '../../utils/notificationApi';
+import { PageInitArgs } from '../../routes-object';
+import { selectUser } from '../../store/slices/userSlice';
+import usePage from '../../hooks/usePage';
+
+export const initLoginPage = async ({ dispatch, state }: PageInitArgs) => {
+  if (!selectUser(state)) {
+    await dispatch(fetchUserData());
+  }
+};
+
+const HelmetComponent = Helmet as unknown as React.FC<{
+  children: React.ReactNode;
+}>;
 
 function LoginPage() {
+  usePage({ initPage: initLoginPage });
+
   const formType = 'login';
   const ids = loginInputs.map(({ id }) => id);
   const { formData, isFormValid, handleChange, handleBlur } = useForm(getFormData(ids), formType);
@@ -52,34 +69,42 @@ function LoginPage() {
 
   const { formTitle, submitText, otherAuthText, linkText } = loginFormText;
   return (
-    <ContentContainer>
-      <MainForm
-        type={formType}
-        formTitle={formTitle}
-        submitText={submitText}
-        otherAuthText={otherAuthText}
-        linkText={linkText}
-        isFormValid={isFormValid}
-        onSubmit={handleSubmit}
-        onOtherAuthorize={handleOtherAuthorize}
-        onNavigate={handleNavigate}
-      >
+    <>
+      <HelmetComponent>
+        <meta charSet="utf-8" />
+        <title>Авторизация</title>
+        <meta name="description" content="Страница авторизации" />
+      </HelmetComponent>
+      <AppHeader />
+      <ContentContainer>
+        <MainForm
+          type={formType}
+          formTitle={formTitle}
+          submitText={submitText}
+          otherAuthText={otherAuthText}
+          linkText={linkText}
+          isFormValid={isFormValid}
+          onSubmit={handleSubmit}
+          onOtherAuthorize={handleOtherAuthorize}
+          onNavigate={handleNavigate}
+        >
 
-        {loginInputs.map(({ id, type, placeholder, text }) => (
-          <FormField
-            key={id}
-            id={id}
-            placeholder={placeholder}
-            type={type}
-            text={text}
-            errorMessage={formData[id].errorText}
-            value={formData[id].value}
-            onChange={handleChange}
-            onBlur={handleBlur}
-          />
-        ))}
-      </MainForm>
-    </ContentContainer>
+          {loginInputs.map(({ id, type, placeholder, text }) => (
+            <FormField
+              key={id}
+              id={id}
+              placeholder={placeholder}
+              type={type}
+              text={text}
+              errorMessage={formData[id].errorText}
+              value={formData[id].value}
+              onChange={handleChange}
+              onBlur={handleBlur}
+            />
+          ))}
+        </MainForm>
+      </ContentContainer>
+    </>
   );
 }
 

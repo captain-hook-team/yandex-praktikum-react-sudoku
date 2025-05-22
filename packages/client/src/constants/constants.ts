@@ -1,3 +1,6 @@
+/* eslint-disable no-undef */
+import '../client.d';
+
 enum ROUTES {
   MAIN = '/',
   SIGN_UP = '/signup',
@@ -22,3 +25,9 @@ export enum EMOJI {
   LIKE = 'like',
   DISLIKE = 'dislike'
 }
+
+export const isServer = typeof window === 'undefined';
+// Добавлена новая константа для URL сервера
+export const SERVER_HOST = isServer
+  ? __INTERNAL_SERVER_URL__
+  : __EXTERNAL_SERVER_URL__;

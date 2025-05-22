@@ -1,16 +1,30 @@
-import { useCallback, FormEvent, memo } from 'react';
+import { Helmet } from 'react-helmet';
+import React, { useCallback, FormEvent, memo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import {
-  ContentContainer, FormField, MainForm,
-} from '../../components';
+import { AppHeader, ContentContainer, FormField, MainForm } from '../../components';
 import ROUTES from '../../constants/constants';
 import useWithPasswordForm from '../../components/utils/hooks/form/useWithPasswordForm';
 import { signupFormText, signupInputs, getFormData } from '../../components/utils/form-helper';
 import { useAppDispatch } from '../../store/hooks';
-import { fetchSignUp } from '../../store/slices/userExtraReducers';
+import { fetchSignUp, fetchUserData } from '../../store/slices/userExtraReducers';
 import { IReqData } from '../../utils/Api/AuthApi';
+import { PageInitArgs } from '../../routes-object';
+import { selectUser } from '../../store/slices/userSlice';
+import usePage from '../../hooks/usePage';
+
+export const initSignupPage = async ({ dispatch, state }: PageInitArgs) => {
+  if (!selectUser(state)) {
+    await dispatch(fetchUserData());
+  }
+};
+
+const HelmetComponent = Helmet as unknown as React.FC<{
+  children: React.ReactNode;
+}>;
 
 function SignupPage() {
+  usePage({ initPage: initSignupPage });
+
   const formType = 'signup';
   const ids = signupInputs.map(({ id }) => id);
   const {
@@ -42,32 +56,40 @@ function SignupPage() {
 
   const { formTitle, submitText, linkText } = signupFormText;
   return (
-    <ContentContainer>
-      <MainForm
-        type={formType}
-        formTitle={formTitle}
-        submitText={submitText}
-        linkText={linkText}
-        isFormValid={isFormValid}
-        onSubmit={handleSubmit}
-        onNavigate={handleNavigate}
-      >
+    <>
+      <HelmetComponent>
+        <meta charSet="utf-8" />
+        <title>Регистрация</title>
+        <meta name="description" content="Страница регистрации" />
+      </HelmetComponent>
+      <AppHeader />
+      <ContentContainer>
+        <MainForm
+          type={formType}
+          formTitle={formTitle}
+          submitText={submitText}
+          linkText={linkText}
+          isFormValid={isFormValid}
+          onSubmit={handleSubmit}
+          onNavigate={handleNavigate}
+        >
 
-        {signupInputs.map(({ id, type, placeholder, text }) => (
-          <FormField
-            key={id}
-            id={id}
-            type={type}
-            placeholder={placeholder}
-            text={text}
-            errorMessage={formData[id].errorText}
-            value={formData[id].value}
-            onChange={handleChange}
-            onBlur={handleBlur}
-          />
-        ))}
-      </MainForm>
-    </ContentContainer>
+          {signupInputs.map(({ id, type, placeholder, text }) => (
+            <FormField
+              key={id}
+              id={id}
+              type={type}
+              placeholder={placeholder}
+              text={text}
+              errorMessage={formData[id].errorText}
+              value={formData[id].value}
+              onChange={handleChange}
+              onBlur={handleBlur}
+            />
+          ))}
+        </MainForm>
+      </ContentContainer>
+    </>
   );
 }
 
