@@ -6,6 +6,7 @@ import useModal from '../../hooks/useModal';
 import NavLinks from './components/NavLinks';
 import { useAppSelector } from '../../store/hooks';
 import { selectAuth } from '../../store/slices/userSlice';
+import { ThemeSwitcher } from '..';
 
 export default function AppHeader() {
   const { isModalOpen, toggleModal, closeModal } = useModal(style.header__overlay);
@@ -50,6 +51,7 @@ export default function AppHeader() {
         </button>
         <nav className={style.header__linksWrap}>
           <NavLinks tabs={tabs} />
+          <ThemeSwitcher />
         </nav>
       </section>
       {isModalOpen && (
