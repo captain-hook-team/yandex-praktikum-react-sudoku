@@ -1,0 +1,11 @@
+@mixin light-theme {
+  --bg-color: #fff;
+  --text-color: #1e1e1e;
+  --bg-image: url('../assets/images/numbers.png');
+}
+
+@mixin dark-theme {
+  --bg-color: #1a1a1a;
+  --text-color: #ffffff;
+  --bg-image: url('../assets/images/numbers_theme-dark.png');
+}

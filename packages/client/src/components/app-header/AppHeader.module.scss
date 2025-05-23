@@ -69,7 +69,7 @@
             z-index: 12;
             width: 257px;
             height: 100vh;
-            background: $white;
+            background: var(--bg-color);
         }
 
         &__closeBtn {
