@@ -1,6 +1,6 @@
 import { useParams } from 'react-router-dom';
 import styles from './ForumPage.module.scss';
-import { IFolderTopic, ITopic, ITopicList } from '../../models/Forum';
+import { IFolderTopic, ITopicList } from '../../models/Forum';
 import BackButton from '../../components/back-button/BackButton';
 import TopicListPage from '../topic-list-page/TopicListPage';
 import TopicFolderListPage from '../topic-folder-list-page/TopicFolderListPage';
@@ -12,9 +12,13 @@ interface ForumPageProps {
 
 export default function ForumPage({ folders, topics }: ForumPageProps) {
   const { id } = useParams<{ id: string }>();
+  const currentId = id ? Number(id) : null;
   const headerRowClass = id
     ? styles.page__headerList
     : styles.page__headerFolder;
+  const filteredTopics = currentId
+    ? topics.filter((topic) => topic.parentId === currentId)
+    : [];
   return (
     <div className={styles.page}>
       <BackButton />
@@ -31,12 +35,8 @@ export default function ForumPage({ folders, topics }: ForumPageProps) {
         <span className={styles.page__headerSpan}>Последняя тема</span>
       </div>
       <div className={styles.page__topicList}>
-        {id ? (
-          <TopicListPage
-            topics={topics.filter(
-              (topic: ITopic) => topic.parentId === Number(id)
-            )}
-          />
+        {currentId ? (
+          <TopicListPage topics={filteredTopics} />
         ) : (
           <TopicFolderListPage folders={folders} />
         )}

@@ -1,28 +1,50 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import styles from './TopicPage.module.scss';
-import { mockTopic } from '../../constants/mocks';
 import { ITopic } from '../../models/Forum';
 import CommentForm from './components/CommentForm';
 import CommentList from './components/CommentList';
 import BackButton from '../../components/back-button/BackButton';
+import { getTopicById, sendMessage } from '../../services/ForumSevices';
 
 export default function TopicPage() {
   const { id } = useParams<{ id: string }>();
   const [topic, setTopic] = useState<ITopic | null>(null);
 
   useEffect(() => {
-    const foundTopic = mockTopic.find(
-      (topicInfo: ITopic) => topicInfo.id === Number(id)
-    );
-    if (foundTopic) {
-      setTopic(foundTopic);
-    }
+    const loadTopic = async () => {
+      try {
+        const data = await getTopicById(Number(id));
+        setTopic(data);
+      } catch (err) {
+        if (err instanceof Error) {
+          throw new Error(err.message);
+        }
+      }
+    };
+
+    loadTopic();
   }, [id]);
 
-  const handleSubmit = useCallback((value: string) => {
-    console.log(`Submit comment: ${value}`);
-  }, []);
+  const handleSubmit = useCallback(async (value: string) => {
+    if (!topic || !value.trim()) return;
+
+    try {
+      const newComment = await sendMessage(Number(id), 'User', value); // можно заменить 'User' на имя пользователя из контекста
+      setTopic((prev) =>
+        (prev
+          ? {
+            ...prev,
+            comments: [...(prev.comments || []), newComment.data],
+          }
+          : null)
+      );
+    } catch (err) {
+      if (err instanceof Error) {
+        throw new Error(err.message);
+      }
+    }
+  }, [topic, id]);
 
   if (!topic) {
     return (
