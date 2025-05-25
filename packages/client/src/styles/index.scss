@@ -1,6 +1,15 @@
 @use './variables.scss' as *;
 @use './normalize.css' as *;
+@use './theme-mixins.scss' as theme;
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+:root {
+  @include theme.light-theme; // По умолчанию светлая тема
+}
+
+[data-theme="dark"] {
+  @include theme.dark-theme;
+}
 
 .root {
   display: flex;
@@ -10,14 +19,21 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-size-adjust: 100%;
-  background-color: #fff;
-  color: #1e1e1e;
+  background-color: var(--bg-color);
+  color: var(--text-color);
   min-height: 100vh;
   width: 100%;
   font-size: 16px;
   box-sizing: border-box;
-  background-image: url('../assets/images/numbers.png');
+  background-image: var(--bg-image);
   background-size: cover;
   background-position: center center;
   background-attachment: fixed;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    @include theme.dark-theme;
+  }
 }

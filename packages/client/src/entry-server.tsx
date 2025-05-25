@@ -15,6 +15,7 @@ import './styles/index.scss';
 import { createFetchRequest, createUrl, createContext } from './entry-server.utils';
 import { setPageHasBeenInitializedOnServer } from './store/slices/ssrSlice';
 import { isServer } from './constants/constants';
+import { getThemeFromCookies, setTheme } from './store/slices/themeSlice';
 
 interface RenderResult {
   html: string;
@@ -81,6 +82,10 @@ const render = async (req: ExpressRequest): Promise<RenderResult> => {
   }
   // Создёт статический роутер, чтобы на сервере можно было отрендерить HTML-разметку
   const router = createStaticRouter(dataRoutes, context);
+
+  // Инициализация темы из кук (если нет — светлая)
+  const theme = getThemeFromCookies(req.cookies);
+  store.dispatch(setTheme(theme));
 
   // Рендерит разметку
   const appHtml = ReactDOM.renderToString(

@@ -1,0 +1,11 @@
+<svg id="svg" fill="#fbff00" stroke="#fbff00" width="200" height="200" version="1.1" viewBox="144 144 512 512" xmlns="http://www.w3.org/2000/svg">
+    <g id="IconSvg_bgCarrier" stroke-width="0"></g>
+    <g id="IconSvg_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" stroke="#CCCCCC" stroke-width="0">
+      <path xmlns="http://www.w3.org/2000/svg" d="m400 588.45c-103.91 0-188.46-84.543-188.46-188.45 0-103.91 84.543-188.46 188.46-188.46 103.91 0 188.45 84.543 188.45 188.46 0 103.91-84.543 188.45-188.45 188.45z"></path>
+
+      </g>
+     <g id="IconSvg_iconCarrier">
+      <path xmlns="http://www.w3.org/2000/svg" d="m400 588.45c-103.91 0-188.46-84.543-188.46-188.45 0-103.91 84.543-188.46 188.46-188.46 103.91 0 188.45 84.543 188.45 188.46 0 103.91-84.543 188.45-188.45 188.45z"></path>
+
+      </g>
+      </svg>

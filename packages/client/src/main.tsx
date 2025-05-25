@@ -7,6 +7,7 @@ import { store } from './store';
 import routesObject from './routes-object';
 import { fetchUserByCode, fetchUserData } from './store/slices/userExtraReducers';
 import { isServer } from './constants/constants';
+import { setTheme } from './store/slices/themeSlice';
 
 const router = createBrowserRouter(routesObject);
 
@@ -46,6 +47,11 @@ function startServiceWorker() {
         });
     });
   }
+}
+
+const serverTheme = window.APP_INITIAL_STATE?.theme?.currentTheme;
+if (serverTheme) {
+  store.dispatch(setTheme(serverTheme));
 }
 
 ReactDOM.hydrateRoot(document.getElementById('root') as HTMLElement,
