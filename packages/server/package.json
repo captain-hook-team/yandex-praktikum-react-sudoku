@@ -11,6 +11,7 @@
     "test": "jest ."
   },
   "dependencies": {
+    "@types/sanitize-html": "^2.16.0",
     "cors": "^2.8.5",
     "cross-env": "^7.0.3",
     "dotenv": "^16.0.2",
@@ -18,6 +19,9 @@
     "express": "^4.18.1",
     "pg": "^8.8.0",
     "prettier": "^2.7.1",
+    "sanitize-html": "^2.17.0",
+    "sequelize": "^6.37.7",
+    "sequelize-cli": "^6.6.3",
     "vite": "^6.3.5"
   },
   "devDependencies": {
