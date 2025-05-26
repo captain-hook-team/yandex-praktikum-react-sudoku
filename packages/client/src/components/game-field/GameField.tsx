@@ -40,6 +40,22 @@ function GameField() {
   const [selectedCell, setSelectedCell] = useState<CellInfo>();
   const [countHints, setCountHints] = useState<number>(0);
   const [countErrors, setCountErrors] = useState<number>(0);
+  const [gameTime, setGameTime] = useState(0);
+  const [isGameRunning, setIsGameRunning] = useState(true);
+
+  useEffect(() => {
+    let interval = null;
+
+    if (isGameRunning) {
+      interval = setInterval(() => {
+        setGameTime((prev) => prev + 1);
+      }, 1000);
+    }
+
+    return () => {
+      if (interval) clearInterval(interval);
+    };
+  }, [isGameRunning]);
 
   useEffect(() => {
     const handleFullscreenChange = () => {
@@ -75,6 +91,7 @@ function GameField() {
 
     if (!checkUncorrectedValue) {
       setIsGameOverOpen(true);
+      setIsGameRunning(false);
     }
   }, [field]);
 
@@ -199,6 +216,7 @@ function GameField() {
         isOpen={isGameOverOpen}
         countErrors={countErrors}
         handleRefreshField={handleRefreshField}
+        time={gameTime}
       />
       {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
       <div
@@ -237,7 +255,7 @@ function GameField() {
           </p>
         </Popup>
         <div className={style.gameHeader}>
-          <span>{`${new Date().getHours()}:${new Date().getSeconds()}`}</span>
+          <span style={{ width: '30px' }}>{`${gameTime}`}</span>
           <span style={{ fontWeight: '900', fontSize: '30px', display: 'flex', gap: '5px' }}>
             {Array(countErrors).fill('X').map((item) => (<span style={{ color: 'red' }}>{item}</span>))}
             {Array(3 - countErrors).fill('X').map((item) => (<span>{item}</span>))}

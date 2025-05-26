@@ -12,5 +12,5 @@ export { default as GameOverForm } from './game-over-form/GameOverForm';
 export { default as MainForm } from './main-form/MainForm';
 export { default as Navigation } from './navigation/NavigationComponent';
 export { default as Notes } from './notes/Notes';
-export { default as Pagination } from './pagination/pagination';
+export { default as Pagination } from './pagination/Pagination';
 export { default as ThemeSwitcher } from './theme-switcher/ThemeSwitcher';
