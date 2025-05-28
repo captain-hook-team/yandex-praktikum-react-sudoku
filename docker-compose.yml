@@ -30,6 +30,7 @@ services:
             - "${SERVER_PORT}:${SERVER_PORT}"
         environment:
           SERVER_PORT: ${SERVER_PORT}
+          HUSKY: 0
 
     postgres:
       image: postgres:14     

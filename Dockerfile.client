@@ -8,13 +8,12 @@ WORKDIR /app
 FROM base as builder
 
 COPY package.json yarn.lock ./
-RUN yarn install --frozen-lockfile
+RUN yarn install --frozen-lockfile --ignore-scripts
 
 COPY . .
 
 RUN yarn lerna bootstrap
 RUN rm -rf /app/packages/client/dist/ && yarn build --scope=client
-
 
 FROM node:$NODE_VERSION-buster-slim as production
 WORKDIR /app
