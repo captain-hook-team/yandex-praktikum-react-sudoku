@@ -6,6 +6,8 @@ services:
         image: prakticum-client
         build:
             context: .
+            depends_on:
+              - postgres
             dockerfile: Dockerfile.client
             args:
               CLIENT_PORT: ${CLIENT_PORT}
@@ -30,8 +32,12 @@ services:
             - "${SERVER_PORT}:${SERVER_PORT}"
         environment:
           SERVER_PORT: ${SERVER_PORT}
+          HUSKY: 0
+        networks:
+          - awesome
 
     postgres:
+      container_name: prackicum-postgres
       image: postgres:14     
       ports:
         - "${POSTGRES_PORT}:${POSTGRES_PORT}"
@@ -41,4 +47,9 @@ services:
         POSTGRES_DB: ${POSTGRES_DB}
       volumes:
         - ./tmp/pgdata:/var/lib/postgresql/data
+      networks:
+        - awesome
 
+networks:
+    awesome:
+        driver: bridge 
