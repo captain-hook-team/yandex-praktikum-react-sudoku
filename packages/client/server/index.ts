@@ -17,7 +17,7 @@ const __dirname = path.dirname(__filename);
 
 dotenv.config({ path: '../../.env' });
 
-const port = process.env.SERVER_PORT || 80;
+const port = process.env.CLIENT_PORT || 80;
 const clientPath = path.join(__dirname, '..');
 const isDev = process.env.NODE_ENV === 'development';
 
