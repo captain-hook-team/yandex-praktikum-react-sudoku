@@ -16,7 +16,7 @@ function CommentForm(props: CommentFormProps) {
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    onSubmit(text);
+    onSubmit(text.replace(/</g, '&lt;').replace(/>/g, '&gt;'));
     setText('');
   };
 
