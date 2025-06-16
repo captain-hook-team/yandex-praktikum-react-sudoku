@@ -43,7 +43,7 @@ function SignupPage() {
 
     // eslint-disable-next-line no-restricted-syntax
     for (const [key, { value }] of Object.entries(formData)) {
-      reqData[key] = value;
+      reqData[key] = value.replace(/</g, '&lt;').replace(/>/g, '&gt;');
     }
 
     try {
