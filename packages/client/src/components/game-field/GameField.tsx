@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import GameCell from '../game-cell/GameCell';
-import mockField from './mockField';
 import style from './GameField.module.scss';
 import addOrRemove from '../../utils/addOrRemove';
+import generateSudoku from '../../utils/generateSudoku';
 import { GameFieldButton, InputNumberButton } from '../buttons';
 import { GAME_BUTTONS } from '../../constants/constants';
 import Popup from '../popup/Popup';
@@ -32,7 +32,7 @@ interface IDocument {
 
 function GameField() {
   const [isFullscreen, setIsFullscreen] = useState<boolean>(!!document.fullscreenElement);
-  const [field, setField] = useState<CellInfo[][]>(JSON.parse(JSON.stringify(mockField)));
+  const [field, setField] = useState<CellInfo[][]>(JSON.parse(JSON.stringify(generateSudoku())));
   const [isEnabledNotes, setIsEnabledNotes] = useState<boolean>(false);
   const [isPopupOpen, setPopupOpen] = useState<boolean>(false);
   const [isGameOverOpen, setIsGameOverOpen] = useState<boolean>(false);
@@ -42,6 +42,12 @@ function GameField() {
   const [countErrors, setCountErrors] = useState<number>(0);
   const [gameTime, setGameTime] = useState(0);
   const [isGameRunning, setIsGameRunning] = useState(true);
+
+  const secondsToMMSS = (seconds: number) => {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`;
+  };
 
   useEffect(() => {
     let interval = null;
@@ -70,13 +76,14 @@ function GameField() {
   }, []);
 
   const handleRefreshField = () => {
-    setField(JSON.parse(JSON.stringify(mockField)));
+    setField(JSON.parse(JSON.stringify(generateSudoku())));
     setCountHints(0);
     setCountErrors(0);
     setSelectedCell(undefined);
     setMoveHistory([]);
     setIsEnabledNotes(false);
     setPopupOpen(false);
+    setGameTime(0);
     setIsGameOverOpen(false);
   };
 
@@ -128,7 +135,7 @@ function GameField() {
       setField(newField);
       handleCheckGameOver();
 
-      if (newValue !== correctValue) {
+      if (newValue !== correctValue && !isEnabledNotes) {
         if (countErrors === 2) {
           setTimeout(() => setIsGameOverOpen(true), 500);
         }
@@ -255,7 +262,7 @@ function GameField() {
           </p>
         </Popup>
         <div className={style.gameHeader}>
-          <span style={{ width: '30px' }}>{`${gameTime}`}</span>
+          <span style={{ width: '30px' }}>{`${secondsToMMSS(gameTime)}`}</span>
           <span style={{ fontWeight: '900', fontSize: '30px', display: 'flex', gap: '5px' }}>
             {Array(countErrors).fill('X').map((item) => (<span style={{ color: 'red' }}>{item}</span>))}
             {Array(3 - countErrors).fill('X').map((item) => (<span>{item}</span>))}
