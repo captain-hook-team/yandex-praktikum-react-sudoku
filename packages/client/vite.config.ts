@@ -8,6 +8,9 @@ dotenv.config({ path: '../../.env' });
 export default defineConfig({
   server: {
     port: Number(process.env.CLIENT_PORT) || 3000,
+    allowedHosts: [
+      'sudoku-captain-hook-team-48.ya-praktikum.tech'
+    ]
   },
   define: {
     __SERVER_PORT__: process.env.SERVER_PORT,
